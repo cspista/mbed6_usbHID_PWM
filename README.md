@@ -94,7 +94,7 @@ the dynamic library cyUSB.dll as well (freom the same ZIP package)
 
 ![](./images/mbed6_usbhid_pwm.png)
 
-### Using witk Python script
+### Using with Python script
 
 Another possibility is the usage of Python (we have to install the pywinusb helper module)
 The following Python script is a console application which provides 
