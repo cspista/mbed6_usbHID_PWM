@@ -16,8 +16,6 @@ The package sent as answer are reports:
 first byte: BUTTON1 state (0: released, 1: pressed) 
 4th-5th bytes: ADC value in high endian (MSB first) order
 
-                                 |
-
 The **USBHID** class provides generic HID (Human Interface Device) functionality over the USB channel. 
 In the case of generic HID devices, the HID report descriptor specifies 
 only specifies the amount of data transferred. The interpretation of the data, however, is left to the firmware 
