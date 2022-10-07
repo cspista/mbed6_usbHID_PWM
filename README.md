@@ -97,7 +97,87 @@ the dynamic library cyUSB.dll as well (freom the same ZIP package)
 ### Using witk Python script
 
 Another possibility is the usage of Python (we have to install the pywinusb helper module)
-The attached Python script (usbhid_pwm.py) is a console application which provides 
+The following Python script is a console application which provides 
 a menu for controlling the USB communication with the mbed card.
+
+```
+from time import sleep
+from msvcrt import kbhit
+
+import pywinusb.hid as hid
+
+sw1 = 0
+adc = 0
+voltage = 0
+led1 = 0
+led2 = 10
+
+def sample_handler(data):
+    global sw1
+    global adc
+    sw1 = data[1]
+    adc = data[4]*256 + data[5]
+
+def send_command(led1,led2):    # Send the message to the Mbed board
+    # The first byte is the report ID which must be 0
+    buffer = [0 for i in range(9)]  # Array of 9 elements  
+    buffer[1] = led1
+    buffer[2] = led2
+    #-- print(len(buffer),": ", buffer)
+    out_report = device.find_output_reports()
+    out_report[0].set_raw_data(buffer)
+    out_report[0].send()  
+
+all_devices = hid.HidDeviceFilter(vendor_id = 0x1234, product_id = 0x0006).get_devices()
+
+if not all_devices:
+    raise ValueError("HID device not found")
+
+device = all_devices[0]
+print("Device connected!\r\nSelect option:")
+print("0. Exit")
+print("1. Toggle LED1 state")
+print("2. Increase LED2 brightness")
+print("3. Decrease LED2 brightness")
+print("4. Read ADC value and BUTTON1 status")
+
+device.open()
+# Set custom raw data handler
+device.set_raw_data_handler(sample_handler)
+while device.is_plugged():
+    print("\nCommand ('0' to '4') [press Enter after number]: ")
+    while not kbhit() and device.is_plugged():
+        index_option = input()
+        if index_option.isdigit() and int(index_option) < 5:
+            break;
+    ix = int(index_option)
+
+    if ix == 0:
+        device.close()
+        exit()
+        pass
+    elif ix == 1:
+        led1 = not led1
+        send_command(led1,led2)
+        pass
+    elif ix == 2:
+        led2 = led2 + 30
+        if led2 > 100: led2 = 100
+        send_command(led1,led2)
+        pass
+    elif ix == 3:
+        led2 = led2 - 30
+        if led2 < 1: led2 = 1
+        send_command(led1,led2)
+        pass
+    elif ix == 4:
+        if sw1:
+           btn = "pressed"
+        else:
+           btn = "released"
+        voltage = int(adc*3300/65536)
+        print("SW1 = {0} ADC = {1} = {2} mV".format(btn,adc,voltage))  
+        pass
+```
 
 ![](./images/usbhid_pwm_py.png)
