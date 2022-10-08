@@ -96,7 +96,7 @@ the dynamic library cyUSB.dll as well (freom the same ZIP package)
 
 ### Using with Python script
 
-Another possibility is the usage of Python (we have to install the pywinusb helper module)
+Another possibility is the usage of Python (Besides Python we have to install the **pywinusb** helper module as well)
 The following Python script is a console application which provides 
 a menu for controlling the USB communication with the mbed card.
 
