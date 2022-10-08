@@ -62,7 +62,7 @@ by using an USB cable and an USB socket breakout card.
 
 Finally the **mbed_app.json** sholuld look like this: 
 
-```Json
+```
 {
     "config": {
         "usb_speed": {
