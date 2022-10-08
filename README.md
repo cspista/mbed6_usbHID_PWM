@@ -62,7 +62,7 @@ by using an USB cable and an USB socket breakout card.
 
 Finally the **mbed_app.json** sholuld look like this: 
 
-```
+```json
 {
     "config": {
         "usb_speed": {
@@ -100,7 +100,7 @@ Another possibility is the usage of Python (we have to install the pywinusb help
 The following Python script is a console application which provides 
 a menu for controlling the USB communication with the mbed card.
 
-```
+```python
 from time import sleep
 from msvcrt import kbhit
 
